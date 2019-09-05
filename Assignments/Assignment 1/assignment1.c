@@ -68,6 +68,13 @@ int main(void)
                 scanf( "%s", cmd );
                 chdir( cmd ); /* what can go wrong ? */
                 break;
+            case 'd':
+                printf( "Display what?:" );
+                scanf( "%s", s );
+                strcpy( cmd, "more ");
+                strcat( cmd, s );
+                system( cmd ); /*this is bad, should use fork() then execv() or execl() */
+                break;
             }
         }
     }
