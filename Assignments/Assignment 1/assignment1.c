@@ -88,7 +88,17 @@ int main(void)
                 system( cmd ); /*this is bad, should use fork() then execv() or execl() */
                 break;
             case 's':
-                
+                // sort goes here
+                break;
+            case 't':
+                printf( "Remove what?:" );
+                scanf ( "%s", s );
+                strcpy( cmd, "rm -r ");
+                strcat( cmd, s );
+                system( cmd );
+                break;
+            case 'm':
+                // move goes here
                 break;
             }
         }
