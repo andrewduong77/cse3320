@@ -7,13 +7,15 @@
 #include <time.h>
 // #include <curses.h> 
 
+void quicksort(int number[25],int first,int last);
+
 int main(void)
 {
     pid_t child;
     DIR * d;
     struct dirent * de;
-    int i, c, k;
-    char s[256], cmd[256]; /* fixed length buffers? */
+    int i, c, k, dirs_count, files_count;
+    char s[256], cmd[256], dirs[1024][2048], files[1024][2048]; /* fixed length buffers? */
     time_t t; 
 
     while (1)
@@ -28,15 +30,24 @@ int main(void)
         while ((de = readdir(d)))
         {
             if ((de->d_type) & DT_DIR)
-                printf( " ( %d Directory: %s ) \n", c++, de->d_name);
+            {
+                strcpy(dirs[c], de->d_name);
+                printf( " ( %d Directory: %s ) \n", c++, dirs[c]);
+                // printf( " ( %d Directory: %s ) \n", c++, de->d_name);
+            }
         }
         closedir( d );
         d = opendir( "." );
+        dirs_count = c;
         c = 0;
         while ((de = readdir(d)))
         {
             if (((de->d_type) & DT_REG))
-                printf( " ( %d File: %s ) \n", c++, de->d_name);
+            {
+                strcpy(files[c], de->d_name);
+                printf( " ( %d File: %s ) \n", c++, files[c]);
+                // printf( " ( %d File: %s ) \n", c++, de->d_name);
+            }
             if ( ( c % 8 ) == 0 )
             {
                 printf( "Hit N for Next\n" ); /* What if only subdirs? */
@@ -44,6 +55,7 @@ int main(void)
             }
         }
         closedir( d );
+        files_count = c;
         printf( "-----------------------------------------\n" );
         c = getchar( );
         getchar( );
@@ -75,6 +87,38 @@ int main(void)
                 strcat( cmd, s );
                 system( cmd ); /*this is bad, should use fork() then execv() or execl() */
                 break;
+            case 's':
+                
+                break;
             }
         }
     }
+
+void quicksort(int number[25],int first,int last)
+{
+    int i, j, pivot, temp;
+    if(first < last)
+    {
+        pivot = first;
+        i = first;
+        j = last;
+        while(i < j)
+        {
+            while(number[i] <= number[pivot] && i<last)
+                i++;
+            while(number[j] > number[pivot])
+                j--;
+            if(i < j)
+            {
+                temp = number[i];
+                number[i] = number[j];
+                number[j] = temp;
+            }
+        }
+        temp = number[pivot];
+        number[pivot] = number[j];
+        number[j] = temp;
+        quicksort(number, first, j - 1);
+        quicksort(number, j + 1, last);
+    }
+}
