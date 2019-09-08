@@ -77,6 +77,10 @@ int main(void)
                 break;
             case 'c':
                 printf( "Change To?:" );
+                // scanf( "%s", s );
+                // strcpy( cmd, "cd ");
+                // strcat( cmd, s );
+                // system( cmd );
                 scanf( "%s", cmd );
                 chdir( cmd ); /* what can go wrong ? */
                 break;
@@ -98,7 +102,15 @@ int main(void)
                 system( cmd );
                 break;
             case 'm':
-                // move goes here
+                printf( "Move what?:" );
+                scanf ( "%s", s );
+                strcpy( cmd, "mv ");
+                strcat( cmd, s );
+                strcat( cmd, " ");
+                printf( "To where?:" );
+                scanf( "%s", s );
+                strcpy( cmd, s );
+                system( cmd );
                 break;
             }
         }
