@@ -36,7 +36,7 @@ earthquake_record data[MAX_DAYS];
 int read_file(char* filename)
 {
    FILE* file = fopen(filename,"r");
-   ssize_t flag;
+   size_t flag;
    char* line;
    size_t sz=0;
    //check if file opened properly or not
