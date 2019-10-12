@@ -9,7 +9,7 @@ typedef struct earthquake
     float longitude;
     float depth;
     float mag;
-    char magType;
+    char magType[3]; // 2+1 for newline character
     int nst;
     float gap;
     float dmin;
@@ -49,38 +49,69 @@ int main()
     // int n = 20000; // size of earthquakes data
     earthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
 
-    char line[1024];
-    while (fgets(line, 1024, stream))
+    char buffer[1024], sink[1024], *del = ",";
+    fgets(sink, 1024, stream);
+    while (fgets(buffer, 1024, stream))
     {
         // char* tmp = strdup(line);
         char* tmp;
         tmp = (char*)malloc(1024*sizeof(char));
-        strcpy(tmp, line);
-        printf("%d would be %s\n", earthquakes_size++, getField(tmp, 2));
-        earthquakes[earthquakes_size].time = getField(tmp, 1);
-        earthquakes[earthquakes_size].longitude = getField(tmp, 2);
-        earthquakes[earthquakes_size].latitude = getField(tmp, 3);
-        earthquakes[earthquakes_size].depth = getField(tmp, 4);
-        earthquakes[earthquakes_size].mag = getField(tmp, 5);
-        earthquakes[earthquakes_size].magType = getField(tmp, 6);
-        earthquakes[earthquakes_size].nst = getField(tmp, 7);
-        earthquakes[earthquakes_size].gap = getField(tmp, 8);
-        earthquakes[earthquakes_size].dmin = getField(tmp, 9);
-        earthquakes[earthquakes_size].rms = getField(tmp, 10);
-        earthquakes[earthquakes_size].net = getField(tmp, 11);
-        earthquakes[earthquakes_size].id = getField(tmp, 12);
-        earthquakes[earthquakes_size].updated = getField(tmp, 13);
-        earthquakes[earthquakes_size].place = getField(tmp, 14);
-        earthquakes[earthquakes_size].type = getField(tmp, 15);
-        earthquakes[earthquakes_size].horizontalError = getField(tmp, 16);
-        earthquakes[earthquakes_size].depthError = getField(tmp, 17);
-        earthquakes[earthquakes_size].magError = getField(tmp, 18);
-        earthquakes[earthquakes_size].magNst = getField(tmp, 19);
-        earthquakes[earthquakes_size].status = getField(tmp, 20);
-        earthquakes[earthquakes_size].locationSource = getField(tmp, 21);
-        earthquakes[earthquakes_size].magSource = getField(tmp, 22);
+        strcpy(tmp, buffer);
+        // printf("%d would be %s\n", earthquakes_size++, getField(tmp, 2));
+
+        strcpy(earthquakes[earthquakes_size].time, strtok(buffer, del));
+        earthquakes[earthquakes_size].latitude = atof(strtok(NULL, del));
+        earthquakes[earthquakes_size].longitude = atof(strtok(NULL, del));
+        earthquakes[earthquakes_size].depth = atof(strtok(NULL, del));
+        earthquakes[earthquakes_size].mag = atof(strtok(NULL, del));
+        strcpy(earthquakes[earthquakes_size].magType, strtok(NULL, del));
+        earthquakes[earthquakes_size].nst = atof(strtok(NULL, del));
+        earthquakes[earthquakes_size].gap = atof(strtok(NULL, del));
+        earthquakes[earthquakes_size].dmin = atof(strtok(NULL, del));
+        earthquakes[earthquakes_size].rms = atof(strtok(NULL, del));
+        strcpy(earthquakes[earthquakes_size].net, strtok(NULL, del));
+        strcpy(earthquakes[earthquakes_size].id, strtok(NULL, del));
+        strcpy(earthquakes[earthquakes_size].updated, strtok(NULL, del));
+        strcpy(earthquakes[earthquakes_size].place, strtok(NULL, del));
+        strcpy(earthquakes[earthquakes_size].type, strtok(NULL, del));
+        earthquakes[earthquakes_size].horizontalError = atof(strtok(NULL, del));
+        earthquakes[earthquakes_size].depthError = atof(strtok(NULL, del));
+        earthquakes[earthquakes_size].magError = atof(strtok(NULL, del));
+        earthquakes[earthquakes_size].magNst = atof(strtok(NULL, del));
+        strcpy(earthquakes[earthquakes_size].status, strtok(NULL, del));
+        strcpy(earthquakes[earthquakes_size].locationSource, strtok(NULL, del));
+        strcpy(earthquakes[earthquakes_size].magSource, strtok(NULL, del));
+        // str(NULL, del) triggers "Segmentation fault"
+        earthquakes_size++;
         // NOTE strtok clobbers tmp
         free(tmp);
     }
-    earthquakes = (Earthquake*)realloc(earthquakes_size*sizeof(Earthquake));
+    // int i;
+    // for(i = 0; i < earthquakes_size; i++)
+    // {
+    //     printf("%s %f %f %f %f %s %d %f %f %f %s %s %s %s %s %f %f %f %f %s %s %s\n",
+    //     earthquakes[i].time,
+    //     earthquakes[i].latitude,
+    //     earthquakes[i].longitude,
+    //     earthquakes[i].depth,
+    //     earthquakes[i].mag,
+    //     earthquakes[i].magType,
+    //     earthquakes[i].nst,
+    //     earthquakes[i].gap,
+    //     earthquakes[i].dmin,
+    //     earthquakes[i].rms,
+    //     earthquakes[i].net,
+    //     earthquakes[i].id,
+    //     earthquakes[i].updated,
+    //     earthquakes[i].place,
+    //     earthquakes[i].type,
+    //     earthquakes[i].horizontalError,
+    //     earthquakes[i].depthError,
+    //     earthquakes[i].magError,
+    //     earthquakes[i].magNst,
+    //     earthquakes[i].status,
+    //     earthquakes[i].locationSource,
+    //     earthquakes[i].magSource);
+    // }
+    // earthquakes = (Earthquake*)realloc(earthquakes_size*sizeof(Earthquake));
 }
