@@ -49,8 +49,7 @@ int main()
     // int n = 20000; // size of earthquakes data
     earthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
 
-    char buffer[1024], sink[1024], *del = ",";
-    fgets(sink, 1024, stream);
+    char buffer[1024], *del = ",";
     while (fgets(buffer, 1024, stream))
     {
         // char* tmp = strdup(line);
