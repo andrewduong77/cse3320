@@ -49,7 +49,7 @@ int main()
     // int n = 20000; // size of earthquakes data
     earthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
 
-    char buffer[1024], *del = ",";
+    char buffer[1024], sink[1024], *del = ",";
     while (fgets(buffer, 1024, stream))
     {
         // char* tmp = strdup(line);
@@ -59,47 +59,50 @@ int main()
         // printf("%d would be %s\n", earthquakes_size++, getField(tmp, 2));
 
         strcpy(earthquakes[earthquakes_size].time, strtok(buffer, del)); // char[]
-        printf("%s ", earthquakes[earthquakes_size].time);
+        printf("%s|", earthquakes[earthquakes_size].time);
         earthquakes[earthquakes_size].latitude = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].latitude);
+        printf("%f|", earthquakes[earthquakes_size].latitude);
         earthquakes[earthquakes_size].longitude = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].longitude);
+        printf("%f|", earthquakes[earthquakes_size].longitude);
         earthquakes[earthquakes_size].depth = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].depth);
+        printf("%f|", earthquakes[earthquakes_size].depth);
         earthquakes[earthquakes_size].mag = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].mag);
+        printf("%f|", earthquakes[earthquakes_size].mag);
         strcpy(earthquakes[earthquakes_size].magType, strtok(NULL, del)); // char[]
-        printf("%s ", earthquakes[earthquakes_size].magType);
+        printf("%s|", earthquakes[earthquakes_size].magType);
         earthquakes[earthquakes_size].nst = atof(strtok(NULL, del)); // int
-        printf("%d ", earthquakes[earthquakes_size].nst);
+        printf("%d|", earthquakes[earthquakes_size].nst);
         earthquakes[earthquakes_size].gap = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].gap);
+        printf("%f|", earthquakes[earthquakes_size].gap);
         earthquakes[earthquakes_size].dmin = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].dmin);
+        printf("%f|", earthquakes[earthquakes_size].dmin);
         earthquakes[earthquakes_size].rms = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].rms);
+        printf("%f|", earthquakes[earthquakes_size].rms);
         strcpy(earthquakes[earthquakes_size].net, strtok(NULL, del)); // char[]
-        printf("%s ", earthquakes[earthquakes_size].net);
+        printf("%s|", earthquakes[earthquakes_size].net);
         strcpy(earthquakes[earthquakes_size].id, strtok(NULL, del)); // char[]
-        printf("%s ", earthquakes[earthquakes_size].id);
+        printf("%s|", earthquakes[earthquakes_size].id);
         strcpy(earthquakes[earthquakes_size].updated, strtok(NULL, del)); // char[]
-        printf("%s ", earthquakes[earthquakes_size].updated);
-        strcpy(earthquakes[earthquakes_size].place, strtok(NULL, del)); // char[]
-        printf("%s ", earthquakes[earthquakes_size].place);
+        // Could not use "\"" as delimiters
+        strtok(NULL, "\"");
+        printf("%s|", earthquakes[earthquakes_size].updated);
+        strcpy(earthquakes[earthquakes_size].place, strtok(NULL, "\"")); // char[]
+        strtok(NULL, del);
+        printf("%s|", earthquakes[earthquakes_size].place);
         strcpy(earthquakes[earthquakes_size].type, strtok(NULL, del)); // char[]
-        printf("%s ", earthquakes[earthquakes_size].type);
+        printf("%s|", earthquakes[earthquakes_size].type);
         earthquakes[earthquakes_size].horizontalError = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].horizontalError);
+        printf("%f|", earthquakes[earthquakes_size].horizontalError);
         earthquakes[earthquakes_size].depthError = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].depthError);
+        printf("%f|", earthquakes[earthquakes_size].depthError);
         earthquakes[earthquakes_size].magError = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].magError);
+        printf("%f|", earthquakes[earthquakes_size].magError);
         earthquakes[earthquakes_size].magNst = atof(strtok(NULL, del)); // float
-        printf("%f ", earthquakes[earthquakes_size].magNst);
+        printf("%f|", earthquakes[earthquakes_size].magNst);
         strcpy(earthquakes[earthquakes_size].status, strtok(NULL, del)); // char[]
-        printf("%s ", earthquakes[earthquakes_size].status);
+        printf("%s|", earthquakes[earthquakes_size].status);
         strcpy(earthquakes[earthquakes_size].locationSource, strtok(NULL, del)); // char[]
-        printf("%s ", earthquakes[earthquakes_size].locationSource);
+        printf("%s|", earthquakes[earthquakes_size].locationSource);
         strcpy(earthquakes[earthquakes_size].magSource, strtok(NULL, del)); // char[]
         printf("%s\n", earthquakes[earthquakes_size].magSource);
         // str(NULL, del) triggers "Segmentation fault"
