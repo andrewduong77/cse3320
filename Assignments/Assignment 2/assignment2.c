@@ -27,12 +27,28 @@ typedef struct earthquake
     char locationSource[3]; // 2+1 for newline character
     char magSource[3]; // 2+1 for newline character
 }Earthquake;
+void swap(Earthquake* a, Earthquake* b)
+{
+    Earthquake* tmp;
+    *tmp = *a;
+    *a = *b;
+    *b = *tmp;
+}
+void sortEarthquakes(Earthquake* theEarthquakes, int theEarthquakesSize)
+{
+    int i, j;
+    for(i = 0; i < theEarthquakesSize; i++)
+        for(j = i; j < theEarthquakesSize; j++)
+            if(theEarthquakes[j].latitude < theEarthquakes[i].latitude)
+                swap(&(theEarthquakes[j]), &(theEarthquakes[i]));
+}
 int main()
 {
     int earthquakes_size = 0;
     FILE* stream = fopen("all_month.csv", "r");
-    Earthquake *earthquakes;
+    Earthquake *earthquakes, *sortedEarthquakes;
     earthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
+    sortedEarthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
     char retreive[1024], *del = ",";
     fgets(retreive, 1024, stream);
     while (fgets(retreive, 1024, stream))
@@ -88,31 +104,58 @@ int main()
         free(buffer);
     }
     int i;
+    // for(i = 0; i < earthquakes_size; i++)
+    // {
+    //     printf("%s|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s\n",
+    //     earthquakes[i].time,
+    //     earthquakes[i].latitude,
+    //     earthquakes[i].longitude,
+    //     earthquakes[i].depth,
+    //     earthquakes[i].mag,
+    //     earthquakes[i].magType,
+    //     earthquakes[i].nst,
+    //     earthquakes[i].gap,
+    //     earthquakes[i].dmin,
+    //     earthquakes[i].rms,
+    //     earthquakes[i].net,
+    //     earthquakes[i].id,
+    //     earthquakes[i].updated,
+    //     earthquakes[i].place,
+    //     earthquakes[i].type,
+    //     earthquakes[i].horizontalError,
+    //     earthquakes[i].depthError,
+    //     earthquakes[i].magError,
+    //     earthquakes[i].magNst,
+    //     earthquakes[i].status,
+    //     earthquakes[i].locationSource,
+    //     earthquakes[i].magSource);
+    // }
+    sortedEarthquakes = earthquakes;
+    sortEarthquakes(sortedEarthquakes, earthquakes_size);
     for(i = 0; i < earthquakes_size; i++)
     {
         printf("%s|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s\n",
-        earthquakes[i].time,
-        earthquakes[i].latitude,
-        earthquakes[i].longitude,
-        earthquakes[i].depth,
-        earthquakes[i].mag,
-        earthquakes[i].magType,
-        earthquakes[i].nst,
-        earthquakes[i].gap,
-        earthquakes[i].dmin,
-        earthquakes[i].rms,
-        earthquakes[i].net,
-        earthquakes[i].id,
-        earthquakes[i].updated,
-        earthquakes[i].place,
-        earthquakes[i].type,
-        earthquakes[i].horizontalError,
-        earthquakes[i].depthError,
-        earthquakes[i].magError,
-        earthquakes[i].magNst,
-        earthquakes[i].status,
-        earthquakes[i].locationSource,
-        earthquakes[i].magSource);
+        sortedEarthquakes[i].time,
+        sortedEarthquakes[i].latitude,
+        sortedEarthquakes[i].longitude,
+        sortedEarthquakes[i].depth,
+        sortedEarthquakes[i].mag,
+        sortedEarthquakes[i].magType,
+        sortedEarthquakes[i].nst,
+        sortedEarthquakes[i].gap,
+        sortedEarthquakes[i].dmin,
+        sortedEarthquakes[i].rms,
+        sortedEarthquakes[i].net,
+        sortedEarthquakes[i].id,
+        sortedEarthquakes[i].updated,
+        sortedEarthquakes[i].place,
+        sortedEarthquakes[i].type,
+        sortedEarthquakes[i].horizontalError,
+        sortedEarthquakes[i].depthError,
+        sortedEarthquakes[i].magError,
+        sortedEarthquakes[i].magNst,
+        sortedEarthquakes[i].status,
+        sortedEarthquakes[i].locationSource,
+        sortedEarthquakes[i].magSource);
     }
-    // earthquakes = (Earthquake*)realloc(earthquakes_size*sizeof(Earthquake));
 }
