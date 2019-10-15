@@ -50,11 +50,10 @@ int main()
     earthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
 
     char retreive[1024], sink[1024], *del = ",";
+    fgets(retreive, 1024, stream);
     while (fgets(retreive, 1024, stream))
     {
         char* buffer = strdup(retreive);
-        // printf("%d would be %s\n", earthquakes_size++, getField(tmp, 2));
-
         strcpy(earthquakes[earthquakes_size].time, strsep(&buffer, del)); // char[]
         printf("%s|", earthquakes[earthquakes_size].time);
         earthquakes[earthquakes_size].latitude = atof(strsep(&buffer, del)); // float
@@ -83,7 +82,6 @@ int main()
         printf("%s|", earthquakes[earthquakes_size].updated);
         strsep(&buffer, "\"");
         strcpy(earthquakes[earthquakes_size].place, strsep(&buffer, "\"")); // char[]
-        // Segmentation at fault at line 85
         printf("%s|", earthquakes[earthquakes_size].place);
         strsep(&buffer, del);
         strcpy(earthquakes[earthquakes_size].type, strsep(&buffer, del)); // char[]
@@ -102,13 +100,9 @@ int main()
         printf("%s|", earthquakes[earthquakes_size].locationSource);
         strcpy(earthquakes[earthquakes_size].magSource, strsep(&buffer, del)); // char[]
         printf("%s", earthquakes[earthquakes_size].magSource);
-        printf("\n");
-        // str(NULL, del) triggers "Segmentation fault"
         earthquakes_size++;
-        // NOTE strtok clobbers tmp
-        // free(tmp);
+        free(buffer);
     }
-    printf("\n\nearthquake_size = %d", earthquakes_size);
     // int i;
     // for(i = 0; i < earthquakes_size; i++)
     // {
