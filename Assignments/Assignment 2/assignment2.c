@@ -27,27 +27,88 @@ typedef struct earthquake
     char locationSource[3]; // 2+1 for newline character
     char magSource[3]; // 2+1 for newline character
 }Earthquake;
-void swap(Earthquake* a, Earthquake* b)
+void earthquakesCopy(Earthquake* a, Earthquake* b, int size)
+{
+    int i;
+    for(i = 0; i < size; i++)
+    {
+        strcpy(a[i].time, b[i].time);
+        a[i].latitude = b[i].latitude;
+        a[i].longitude = b[i].longitude;
+        a[i].depth = b[i].depth;
+        a[i].mag = b[i].mag;
+        strcpy(a[i].magType, b[i].magType);
+        a[i].nst = b[i].nst;
+        a[i].gap = b[i].gap;
+        a[i].dmin = b[i].dmin;
+        a[i].rms = b[i].rms;
+        strcpy(a[i].net, b[i].net);
+        strcpy(a[i].id, b[i].id);
+        strcpy(a[i].updated, b[i].updated);
+        strcpy(a[i].place, b[i].place);
+        strcpy(a[i].type, b[i].type);
+        a[i].horizontalError = b[i].horizontalError;
+        a[i].depthError = b[i].depthError;
+        a[i].magError = b[i].magError;
+        a[i].magNst = b[i].magNst;
+        strcpy(a[i].status, b[i].status);
+        strcpy(a[i].locationSource, b[i].locationSource);
+        strcpy(a[i].magSource, b[i].magSource);
+    }
+}
+void earthquakesSwap(Earthquake* a, Earthquake* b)
 {
     Earthquake* tmp;
     *tmp = *a;
     *a = *b;
     *b = *tmp;
 }
-void sortEarthquakes(Earthquake* theEarthquakes, int theEarthquakesSize)
+void earthquakesSort(Earthquake* theEarthquakes, int theEarthquakesSize)
 {
     int i, j;
     for(i = 0; i < theEarthquakesSize; i++)
         for(j = i; j < theEarthquakesSize; j++)
             if(theEarthquakes[j].latitude < theEarthquakes[i].latitude)
-                swap(&theEarthquakes[j], &theEarthquakes[i]);
+                earthquakesSwap(&theEarthquakes[j], &theEarthquakes[i]);
 }
 void printEarthquakesToScreen(Earthquake* theEarthquakes, int theEarthquakesSize)
 {
     int i;
     for(i = 0; i < theEarthquakesSize; i++)
     {
-        printf("%s|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s\n",
+        printf("%s|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s",
+        theEarthquakes[i].time,
+        theEarthquakes[i].latitude,
+        theEarthquakes[i].longitude,
+        theEarthquakes[i].depth,
+        theEarthquakes[i].mag,
+        theEarthquakes[i].magType,
+        theEarthquakes[i].nst,
+        theEarthquakes[i].gap,
+        theEarthquakes[i].dmin,
+        theEarthquakes[i].rms,
+        theEarthquakes[i].net,
+        theEarthquakes[i].id,
+        theEarthquakes[i].updated,
+        theEarthquakes[i].place,
+        theEarthquakes[i].type,
+        theEarthquakes[i].horizontalError,
+        theEarthquakes[i].depthError,
+        theEarthquakes[i].magError,
+        theEarthquakes[i].magNst,
+        theEarthquakes[i].status,
+        theEarthquakes[i].locationSource,
+        theEarthquakes[i].magSource);
+    }
+}
+void printEarthquakesToFile(Earthquake* theEarthquakes, int theEarthquakesSize)
+{
+    FILE* outStream = fopen("all_month_sorted.csv", "w");
+    int i;
+    fprintf(outStream, "time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource\n");
+    for(i = 0; i < theEarthquakesSize; i++)
+    {
+        fprintf(outStream, "%s,%f,%f,%f,%f,%s,%d,%f,%f,%f,%s,%s,%s,%s,%s,%f,%f,%f,%f,%s,%s,%s",
         theEarthquakes[i].time,
         theEarthquakes[i].latitude,
         theEarthquakes[i].longitude,
@@ -76,10 +137,9 @@ int main()
 {
     int earthquakesSize = 0;
     FILE* inStream = fopen("all_month.csv", "r");
-    FILE* outStream = fopen("all_month_sorted.csv", "w");
-    Earthquake *earthquakes, *sortedEarthquakes;
+    Earthquake *earthquakes, *earthquakesSorted;
     earthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
-    sortedEarthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
+    earthquakesSorted = (Earthquake*)malloc(20000*sizeof(Earthquake));
     char retreive[1024], *del = ",";
     fgets(retreive, 1024, inStream);
     while (fgets(retreive, 1024, inStream))
@@ -112,7 +172,8 @@ int main()
         earthquakesSize++;
         free(buffer);
     }
-    sortedEarthquakes = earthquakes;
-    sortEarthquakes(sortedEarthquakes, earthquakesSize);
-    printEarthquakesToScreen(sortedEarthquakes, earthquakesSize);
+    earthquakesCopy(earthquakesSorted, earthquakes, earthquakesSize);
+    earthquakesSort(earthquakesSorted, earthquakesSize);
+    printEarthquakesToScreen(earthquakesSorted, earthquakesSize);
+    // printEarthquakesToFile(earthquakesSorted, earthquakesSize);
 }
