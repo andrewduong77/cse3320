@@ -42,72 +42,77 @@ void sortEarthquakes(Earthquake* theEarthquakes, int theEarthquakesSize)
             if(theEarthquakes[j].latitude < theEarthquakes[i].latitude)
                 swap(&theEarthquakes[j], &theEarthquakes[i]);
 }
+void printEarthquakesToScreen(Earthquake* theEarthquakes, int theEarthquakesSize)
+{
+    int i;
+    for(i = 0; i < theEarthquakesSize; i++)
+    {
+        printf("%s|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s\n",
+        theEarthquakes[i].time,
+        theEarthquakes[i].latitude,
+        theEarthquakes[i].longitude,
+        theEarthquakes[i].depth,
+        theEarthquakes[i].mag,
+        theEarthquakes[i].magType,
+        theEarthquakes[i].nst,
+        theEarthquakes[i].gap,
+        theEarthquakes[i].dmin,
+        theEarthquakes[i].rms,
+        theEarthquakes[i].net,
+        theEarthquakes[i].id,
+        theEarthquakes[i].updated,
+        theEarthquakes[i].place,
+        theEarthquakes[i].type,
+        theEarthquakes[i].horizontalError,
+        theEarthquakes[i].depthError,
+        theEarthquakes[i].magError,
+        theEarthquakes[i].magNst,
+        theEarthquakes[i].status,
+        theEarthquakes[i].locationSource,
+        theEarthquakes[i].magSource);
+    }
+}
 int main()
 {
-    int earthquakes_size = 0;
-    FILE* stream = fopen("all_month.csv", "r");
+    int earthquakesSize = 0;
+    FILE* inStream = fopen("all_month.csv", "r");
+    FILE* outStream = fopen("all_month_sorted.csv", "w");
     Earthquake *earthquakes, *sortedEarthquakes;
     earthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
     sortedEarthquakes = (Earthquake*)malloc(20000*sizeof(Earthquake));
     char retreive[1024], *del = ",";
-    fgets(retreive, 1024, stream);
-    while (fgets(retreive, 1024, stream))
+    fgets(retreive, 1024, inStream);
+    while (fgets(retreive, 1024, inStream))
     {
         char* buffer = strdup(retreive);
-        strcpy(earthquakes[earthquakes_size].time, strsep(&buffer, del)); // char[]
-        earthquakes[earthquakes_size].latitude = atof(strsep(&buffer, del)); // float
-        earthquakes[earthquakes_size].longitude = atof(strsep(&buffer, del)); // float
-        earthquakes[earthquakes_size].depth = atof(strsep(&buffer, del)); // float
-        earthquakes[earthquakes_size].mag = atof(strsep(&buffer, del)); // float
-        strcpy(earthquakes[earthquakes_size].magType, strsep(&buffer, del)); // char[]
-        earthquakes[earthquakes_size].nst = atof(strsep(&buffer, del)); // int
-        earthquakes[earthquakes_size].gap = atof(strsep(&buffer, del)); // float
-        earthquakes[earthquakes_size].dmin = atof(strsep(&buffer, del)); // float
-        earthquakes[earthquakes_size].rms = atof(strsep(&buffer, del)); // float
-        strcpy(earthquakes[earthquakes_size].net, strsep(&buffer, del)); // char[]
-        strcpy(earthquakes[earthquakes_size].id, strsep(&buffer, del)); // char[]
-        strcpy(earthquakes[earthquakes_size].updated, strsep(&buffer, del)); // char[]
+        strcpy(earthquakes[earthquakesSize].time, strsep(&buffer, del)); // char[]
+        earthquakes[earthquakesSize].latitude = atof(strsep(&buffer, del)); // float
+        earthquakes[earthquakesSize].longitude = atof(strsep(&buffer, del)); // float
+        earthquakes[earthquakesSize].depth = atof(strsep(&buffer, del)); // float
+        earthquakes[earthquakesSize].mag = atof(strsep(&buffer, del)); // float
+        strcpy(earthquakes[earthquakesSize].magType, strsep(&buffer, del)); // char[]
+        earthquakes[earthquakesSize].nst = atof(strsep(&buffer, del)); // int
+        earthquakes[earthquakesSize].gap = atof(strsep(&buffer, del)); // float
+        earthquakes[earthquakesSize].dmin = atof(strsep(&buffer, del)); // float
+        earthquakes[earthquakesSize].rms = atof(strsep(&buffer, del)); // float
+        strcpy(earthquakes[earthquakesSize].net, strsep(&buffer, del)); // char[]
+        strcpy(earthquakes[earthquakesSize].id, strsep(&buffer, del)); // char[]
+        strcpy(earthquakes[earthquakesSize].updated, strsep(&buffer, del)); // char[]
         strsep(&buffer, "\"");
-        strcpy(earthquakes[earthquakes_size].place, strsep(&buffer, "\"")); // char[]
+        strcpy(earthquakes[earthquakesSize].place, strsep(&buffer, "\"")); // char[]
         strsep(&buffer, del);
-        strcpy(earthquakes[earthquakes_size].type, strsep(&buffer, del)); // char[]
-        earthquakes[earthquakes_size].horizontalError = atof(strsep(&buffer, del)); // float
-        earthquakes[earthquakes_size].depthError = atof(strsep(&buffer, del)); // float
-        earthquakes[earthquakes_size].magError = atof(strsep(&buffer, del)); // float
-        earthquakes[earthquakes_size].magNst = atof(strsep(&buffer, del)); // float
-        strcpy(earthquakes[earthquakes_size].status, strsep(&buffer, del)); // char[]
-        strcpy(earthquakes[earthquakes_size].locationSource, strsep(&buffer, del)); // char[]
-        strcpy(earthquakes[earthquakes_size].magSource, strsep(&buffer, del)); // char[]
-        earthquakes_size++;
+        strcpy(earthquakes[earthquakesSize].type, strsep(&buffer, del)); // char[]
+        earthquakes[earthquakesSize].horizontalError = atof(strsep(&buffer, del)); // float
+        earthquakes[earthquakesSize].depthError = atof(strsep(&buffer, del)); // float
+        earthquakes[earthquakesSize].magError = atof(strsep(&buffer, del)); // float
+        earthquakes[earthquakesSize].magNst = atof(strsep(&buffer, del)); // float
+        strcpy(earthquakes[earthquakesSize].status, strsep(&buffer, del)); // char[]
+        strcpy(earthquakes[earthquakesSize].locationSource, strsep(&buffer, del)); // char[]
+        strcpy(earthquakes[earthquakesSize].magSource, strsep(&buffer, del)); // char[]
+        earthquakesSize++;
         free(buffer);
     }
-    int i;
     sortedEarthquakes = earthquakes;
-    sortEarthquakes(sortedEarthquakes, earthquakes_size);
-    for(i = 0; i < earthquakes_size; i++)
-    {
-        printf("%s|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s\n",
-        sortedEarthquakes[i].time,
-        sortedEarthquakes[i].latitude,
-        sortedEarthquakes[i].longitude,
-        sortedEarthquakes[i].depth,
-        sortedEarthquakes[i].mag,
-        sortedEarthquakes[i].magType,
-        sortedEarthquakes[i].nst,
-        sortedEarthquakes[i].gap,
-        sortedEarthquakes[i].dmin,
-        sortedEarthquakes[i].rms,
-        sortedEarthquakes[i].net,
-        sortedEarthquakes[i].id,
-        sortedEarthquakes[i].updated,
-        sortedEarthquakes[i].place,
-        sortedEarthquakes[i].type,
-        sortedEarthquakes[i].horizontalError,
-        sortedEarthquakes[i].depthError,
-        sortedEarthquakes[i].magError,
-        sortedEarthquakes[i].magNst,
-        sortedEarthquakes[i].status,
-        sortedEarthquakes[i].locationSource,
-        sortedEarthquakes[i].magSource);
-    }
+    sortEarthquakes(sortedEarthquakes, earthquakesSize);
+    printEarthquakesToScreen(sortedEarthquakes, earthquakesSize);
 }
