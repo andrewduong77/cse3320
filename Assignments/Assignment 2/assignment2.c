@@ -74,10 +74,10 @@ void earthquakesSort(Earthquake* theEarthquakes, int theEarthquakesSize)
 void printEarthquakesToScreen(Earthquake* theEarthquakes, int theEarthquakesSize)
 {
     int i;
+    printf("%s", theEarthquakes[0].time);
     for(i = 0; i < theEarthquakesSize; i++)
     {
-        printf("%s|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s",
-        theEarthquakes[i].time,
+        printf("|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s",
         theEarthquakes[i].latitude,
         theEarthquakes[i].longitude,
         theEarthquakes[i].depth,
@@ -106,10 +106,10 @@ void printEarthquakesToFile(Earthquake* theEarthquakes, int theEarthquakesSize)
     FILE* outStream = fopen("all_month_sorted.csv", "w");
     int i;
     fprintf(outStream, "time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource\n");
+    fprintf(outStream, "%s", theEarthquakes[0].time);
     for(i = 0; i < theEarthquakesSize; i++)
     {
-        fprintf(outStream, "%s,%f,%f,%f,%f,%s,%d,%f,%f,%f,%s,%s,%s,%s,%s,%f,%f,%f,%f,%s,%s,%s",
-        theEarthquakes[i].time,
+        fprintf(outStream, ",%f,%f,%f,%f,%s,%d,%f,%f,%f,%s,%s,%s,%s,%s,%f,%f,%f,%f,%s,%s,%s",
         theEarthquakes[i].latitude,
         theEarthquakes[i].longitude,
         theEarthquakes[i].depth,
@@ -174,6 +174,6 @@ int main()
     }
     earthquakesCopy(earthquakesSorted, earthquakes, earthquakesSize);
     earthquakesSort(earthquakesSorted, earthquakesSize);
-    printEarthquakesToScreen(earthquakesSorted, earthquakesSize);
-    // printEarthquakesToFile(earthquakesSorted, earthquakesSize);
+    // printEarthquakesToScreen(earthquakesSorted, earthquakesSize);
+    printEarthquakesToFile(earthquakesSorted, earthquakesSize);
 }
