@@ -24,8 +24,8 @@ typedef struct earthquake
     float magError;
     float magNst;
     char status[10]; // 9+1 for newline character
-    char locationSource[3]; // 2+1 for newline character
-    char magSource[3]; // 2+1 for newline character
+    char locationSource[4]; // 3+1 for newline character
+    char magSource[4]; // 3+1 for newline character
 }Earthquake;
 void earthquakesCopy(Earthquake* a, Earthquake* b, int size)
 {
@@ -74,10 +74,11 @@ void earthquakesSort(Earthquake* theEarthquakes, int theEarthquakesSize)
 void printEarthquakesToScreen(Earthquake* theEarthquakes, int theEarthquakesSize)
 {
     int i;
-    printf("%s", theEarthquakes[0].time);
+    // printf("%s", theEarthquakes[0].time);
     for(i = 0; i < theEarthquakesSize; i++)
     {
-        printf("|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s",
+        printf("%s|%f|%f|%f|%f|%s|%d|%f|%f|%f|%s|%s|%s|%s|%s|%f|%f|%f|%f|%s|%s|%s",
+        theEarthquakes[i].time,
         theEarthquakes[i].latitude,
         theEarthquakes[i].longitude,
         theEarthquakes[i].depth,
@@ -106,10 +107,11 @@ void printEarthquakesToFile(Earthquake* theEarthquakes, int theEarthquakesSize)
     FILE* outStream = fopen("all_month_sorted.csv", "w");
     int i;
     fprintf(outStream, "time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource\n");
-    fprintf(outStream, "%s", theEarthquakes[0].time);
+    // fprintf(outStream, "%s", theEarthquakes[0].time);
     for(i = 0; i < theEarthquakesSize; i++)
     {
-        fprintf(outStream, ",%f,%f,%f,%f,%s,%d,%f,%f,%f,%s,%s,%s,%s,%s,%f,%f,%f,%f,%s,%s,%s",
+        fprintf(outStream, "%s,%f,%f,%f,%f,%s,%d,%f,%f,%f,%s,%s,%s,\"%s\",%s,%f,%f,%f,%f,%s,%s,%s",
+        theEarthquakes[i].time,
         theEarthquakes[i].latitude,
         theEarthquakes[i].longitude,
         theEarthquakes[i].depth,

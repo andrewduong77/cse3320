@@ -106,7 +106,7 @@ int main() {
     fprintf(output_stream, "time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource\n");
 
     for(i = 0; i < sz; i++) {
-        fprintf(output_stream, "%s,%f,%f,%f,%f,%s,%d,%f,%f,%f,%s,%s,%s,%s,%s,%f,%f,%f,%f,%s,%s,%s",
+        fprintf(output_stream, "%s,%f,%f,%f,%f,%s,%d,%f,%f,%f,%s,%s,%s,\"%s\",%s,%f,%f,%f,%f,%s,%s,%s",
         eq_datas[i].time,
         eq_datas[i].latitude,
         eq_datas[i].longitude,
