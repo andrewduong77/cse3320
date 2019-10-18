@@ -176,6 +176,6 @@ int main()
     }
     earthquakesCopy(earthquakesSorted, earthquakes, earthquakesSize);
     earthquakesSort(earthquakesSorted, earthquakesSize);
-    // printEarthquakesToScreen(earthquakesSorted, earthquakesSize);
+    printEarthquakesToScreen(earthquakesSorted, earthquakesSize);
     printEarthquakesToFile(earthquakesSorted, earthquakesSize);
 }
