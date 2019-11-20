@@ -102,9 +102,7 @@ int dostat(char *filename)
     if (stat(filename, &fileInfo) >= 0)
         if (S_ISREG(fileInfo.st_mode))
             return 1;
-        else
-            return 0;
-    return;
+    return 0;
 }
 int copyFiles(char *source, char *destination)
 {
